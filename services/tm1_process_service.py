@@ -26,13 +26,16 @@ class ProcessService:
                 if params:
                     for param in params:
                         process_list.append([ti_process.name, param, ti_process.datasource_type,
+                                             ti_process.datasource_data_source_name_for_client,
                                              ti_process.datasource_data_source_name_for_server])
                 else:
                     process_list.append([ti_process.name, '', ti_process.datasource_type,
+                                         ti_process.datasource_data_source_name_for_client,
                                          ti_process.datasource_data_source_name_for_server])
             if process_list:
                 process_df = pd.DataFrame(process_list)
-                process_df.columns = ['Process Name', 'Parameters', 'Datasource Type', 'Datasource']
+                process_df.columns = ['Process Name', 'Parameters', 'Datasource Type', 'Datasource Name for Client',
+                                      'DatasourceName for Server']
                 return process_df
             else:
                 return None
