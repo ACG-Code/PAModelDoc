@@ -36,7 +36,7 @@ from getpass import getpass
 from configparser import ConfigParser
 from base_settings import application_path
 APP_NAME = "PA Model Documentation Tool"
-APP_VERSION = '6.1.1'
+APP_VERSION = '6.1.2'
 
 
 def strtobool(value: str) -> bool:
