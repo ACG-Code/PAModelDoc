@@ -5,6 +5,7 @@ class PySecrets:
     """
     Module for encrypting/decrypting database entries
     """
+
     def __init__(self):
         self.key = b'1seB4qb6ENRQboaLMXqN_o3V6crVkTGboZWCaJKhiEw='
         self.fernet = Fernet(self.key)

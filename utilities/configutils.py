@@ -1,6 +1,7 @@
-from configparser import ConfigParser
-from base_settings import APPLICATION_PATH
 import os
+from configparser import ConfigParser
+
+from base_settings import APPLICATION_PATH
 
 CONFIG_FILE = os.path.join(APPLICATION_PATH, 'config.ini')
 

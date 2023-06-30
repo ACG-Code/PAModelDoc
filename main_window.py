@@ -1,46 +1,137 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from about_window import Ui_about_window
-from help_window import Ui_help_window
-from create_window import Ui_create_window
-from update_window import Ui_update_window
-from utilities import get_config
-from utilities import retrieve_sections
+from PyQt5.QtWidgets import QMessageBox, QProgressBar, QVBoxLayout, QWidget
+from PyQt5.QtCore import QThread, pyqtSignal, QObject, pyqtSlot
+from TM1py.Exceptions import TM1pyNotAdminException, TM1pyException
+
 import resources_rc
+import os
+import time
+from about_window import UiAboutWindow
+from base_settings import APP_NAME
+from create_window import UiCreateWindow
+from help_window import UiHelpWindow
+from pamodel import get_docs
+from update_window import UiUpdateWindow
+from utilities import retrieve_sections, get_config
 
 var = resources_rc
 
 
-class AboutDialog(QtWidgets.QDialog, Ui_about_window):
+class AboutDialog(QtWidgets.QDialog, UiAboutWindow):
     def __init__(self, parent=None):
         QtWidgets.QDialog.__init__(self, parent)
-        self.setupUi(self)
+        self.setup_ui(self)
 
 
-class HelpDialog(QtWidgets.QDialog, Ui_help_window):
+class HelpDialog(QtWidgets.QDialog, UiHelpWindow):
     def __init__(self, parent=None):
         QtWidgets.QDialog.__init__(self, parent)
-        self.setupUi(self)
+        self.setup_ui(self)
 
 
-class CreateDialog(QtWidgets.QDialog, Ui_create_window):
+class CreateDialog(QtWidgets.QDialog, UiCreateWindow):
     def __init__(self, parent=None):
         QtWidgets.QDialog.__init__(self, parent)
-        self.setupUi(self)
+        self.setup_ui(self)
 
 
-class UpdateDialog(QtWidgets.QDialog, Ui_update_window):
+class UpdateDialog(QtWidgets.QDialog, UiUpdateWindow):
     def __init__(self, parent=None):
         QtWidgets.QDialog.__init__(self, parent)
-        self.setupUi(self)
+        self.setup_ui(self)
 
-class Ui_main_window(object):
-    def setupUi(self, main_window):
-        main_window.setObjectName("main_window")
-        main_window.resize(800, 600)
+
+class Worker(QObject):
+    finished = pyqtSignal()
+    intReady = pyqtSignal(int)
+
+    @pyqtSlot()
+    def proc_counter(self):  # A slot takes no params
+        for i in range(1, 100):
+            time.sleep(0.1)
+            self.intReady.emit(i)
+
+        self.finished.emit()
+
+
+class PopUpProgressBar(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.pbar = QProgressBar()
+        self.pbar.setGeometry(30, 40, 500, 75)
+        self.layout = QVBoxLayout(self)
+        self.layout.addWidget(self.pbar)
+        self.setLayout(self.layout)
+        self.setGeometry(300, 300, 550, 100)
+        self.setWindowTitle('Retrieving Information')
+
+        self.obj = Worker()
+        self.thread = QThread()
+        self.obj.intReady.connect(self.on_count_changed)
+        self.obj.moveToThread(self.thread)
+        self.obj.finished.connect(self.thread.quit)
+        self.obj.finished.connect(self.hide)
+        self.thread.started.connect(self.obj.proc_counter)
+
+    def start_progress(self):
+        self.show()
+        self.thread.start()
+
+    def on_count_changed(self, value):
+        self.pbar.setValue(value)
+
+
+class UiMainWindow(object):
+    def __init__(self):
+        self.actionAbout = None
+        self.actionInstructions = None
+        self.actionUpdate_Configuration = None
+        self.actionCreate_Configuration = None
+        self.statusbar = None
+        self.menuHelp = None
+        self.menuSetup = None
+        self.menubar = None
+        self.groupBox_3 = None
+        self.centralwidget = None
+        self.verticalLayoutWidget = None
+        self.verticalLayout = None
+        self.groupBox = None
+        self.verticalLayoutWidget_2 = None
+        self.verticalLayout_2 = None
+        self.label = None
+        self.cmb_config = None
+        self.gridLayoutWidget = None
+        self.gridLayout = None
+        self.le_user = None
+        self.label_2 = None
+        self.le_password = None
+        self.label_3 = None
+        self.groupBox_2 = None
+        self.gridLayoutWidget_2 = None
+        self.le_directory = None
+        self.gridLayout_2 = None
+        self.btn_choose = None
+        self.gridLayoutWidget_3 = None
+        self.rad_all = None
+        self.gridLayout_3 = None
+        self.rad_cubes = None
+        self.rad_dims = None
+        self.rad_procs = None
+        self.rad_security = None
+        self.gridLayoutWidget_4 = None
+        self.btn_execute = None
+        self.gridLayout_4 = None
+        self.check_elem = None
+        self.completed = None
+        self.popup = None
+
+    def setup_ui(self, mainwindow):
+        mainwindow.setObjectName("main_window")
+        mainwindow.resize(800, 600)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/ACG.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        main_window.setWindowIcon(icon)
-        self.centralwidget = QtWidgets.QWidget(main_window)
+        mainwindow.setWindowIcon(icon)
+        self.centralwidget = QtWidgets.QWidget(mainwindow)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
         self.verticalLayoutWidget.setGeometry(QtCore.QRect(10, 10, 781, 541))
@@ -98,8 +189,8 @@ class Ui_main_window(object):
         self.label_3.setAlignment(QtCore.Qt.AlignCenter)
         self.label_3.setObjectName("label_3")
         self.gridLayout.addWidget(self.label_3, 0, 2, 1, 1)
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.gridLayout.addItem(spacerItem, 0, 1, 1, 1)
+        spacer_item = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.gridLayout.addItem(spacer_item, 0, 1, 1, 1)
         self.verticalLayout.addWidget(self.groupBox)
         self.groupBox_2 = QtWidgets.QGroupBox(self.verticalLayoutWidget)
         self.groupBox_2.setObjectName("groupBox_2")
@@ -124,9 +215,10 @@ class Ui_main_window(object):
         self.rad_all = QtWidgets.QRadioButton(self.gridLayoutWidget_3)
         self.rad_all.setObjectName("rad_all")
         self.gridLayout_3.addWidget(self.rad_all, 0, 0, 1, 1)
-        self.cmb_elements = QtWidgets.QComboBox(self.gridLayoutWidget_3)
-        self.cmb_elements.setObjectName("cmb_elements")
-        self.gridLayout_3.addWidget(self.cmb_elements, 0, 2, 1, 1)
+        self.check_elem = QtWidgets.QCheckBox(self.gridLayoutWidget_3)
+        self.check_elem.setObjectName("check_elem")
+        self.gridLayout_3.addWidget(self.check_elem, 0, 2, 1, 1)
+        self.check_elem.setText("Enable Element Count")
         self.rad_cubes = QtWidgets.QRadioButton(self.gridLayoutWidget_3)
         self.rad_cubes.setObjectName("rad_cubes")
         self.gridLayout_3.addWidget(self.rad_cubes, 0, 1, 1, 1)
@@ -148,8 +240,8 @@ class Ui_main_window(object):
         self.gridLayout_4 = QtWidgets.QGridLayout(self.gridLayoutWidget_4)
         self.gridLayout_4.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_4.setObjectName("gridLayout_4")
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.gridLayout_4.addItem(spacerItem1, 0, 0, 1, 1)
+        spacer_item1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.gridLayout_4.addItem(spacer_item1, 0, 0, 1, 1)
         self.btn_execute = QtWidgets.QPushButton(self.gridLayoutWidget_4)
         font = QtGui.QFont()
         font.setBold(True)
@@ -157,28 +249,28 @@ class Ui_main_window(object):
         self.btn_execute.setFont(font)
         self.btn_execute.setObjectName("btn_execute")
         self.gridLayout_4.addWidget(self.btn_execute, 0, 1, 1, 1)
-        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.gridLayout_4.addItem(spacerItem2, 0, 2, 1, 1)
+        spacer_item2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.gridLayout_4.addItem(spacer_item2, 0, 2, 1, 1)
         self.verticalLayout.addWidget(self.groupBox_3)
-        main_window.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(main_window)
+        mainwindow.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(mainwindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
         self.menubar.setObjectName("menubar")
         self.menuSetup = QtWidgets.QMenu(self.menubar)
         self.menuSetup.setObjectName("menuSetup")
         self.menuHelp = QtWidgets.QMenu(self.menubar)
         self.menuHelp.setObjectName("menuHelp")
-        main_window.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(main_window)
+        mainwindow.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(mainwindow)
         self.statusbar.setObjectName("statusbar")
-        main_window.setStatusBar(self.statusbar)
-        self.actionCreate_Configuration = QtWidgets.QAction(main_window)
+        mainwindow.setStatusBar(self.statusbar)
+        self.actionCreate_Configuration = QtWidgets.QAction(mainwindow)
         self.actionCreate_Configuration.setObjectName("actionCreate_Configuration")
-        self.actionUpdate_Configuration = QtWidgets.QAction(main_window)
+        self.actionUpdate_Configuration = QtWidgets.QAction(mainwindow)
         self.actionUpdate_Configuration.setObjectName("actionUpdate_Configuration")
-        self.actionInstructions = QtWidgets.QAction(main_window)
+        self.actionInstructions = QtWidgets.QAction(mainwindow)
         self.actionInstructions.setObjectName("actionInstructions")
-        self.actionAbout = QtWidgets.QAction(main_window)
+        self.actionAbout = QtWidgets.QAction(mainwindow)
         self.actionAbout.setObjectName("actionAbout")
         self.menuSetup.addAction(self.actionCreate_Configuration)
         self.menuSetup.addAction(self.actionUpdate_Configuration)
@@ -186,9 +278,10 @@ class Ui_main_window(object):
         self.menuHelp.addAction(self.actionAbout)
         self.menubar.addAction(self.menuSetup.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
+        self.statusbar.showMessage("Ready")
 
-        self.retranslateUi(main_window)
-        QtCore.QMetaObject.connectSlotsByName(main_window)
+        self.retranslate_ui(mainwindow)
+        QtCore.QMetaObject.connectSlotsByName(mainwindow)
         self.actionAbout.triggered.connect(self.open_about)
         self.actionInstructions.triggered.connect(self.open_help)
         self.actionCreate_Configuration.triggered.connect(self.open_create)
@@ -196,28 +289,32 @@ class Ui_main_window(object):
         sections = retrieve_sections()
         self.cmb_config.addItems(sections)
         self.btn_choose.clicked.connect(self.browse_dirs)
-        self.cmb_elements.setEnabled(False)
+        self.check_elem.setEnabled(False)
         self.rad_all.clicked.connect(self.on_change)
         self.rad_dims.clicked.connect(self.on_change)
         self.rad_cubes.clicked.connect(self.on_change)
         self.rad_procs.clicked.connect(self.on_change)
         self.rad_security.clicked.connect(self.on_change)
-        bools = ['', 'True', 'False']
-        self.cmb_elements.addItems(bools)
+        self.btn_execute.clicked.connect(self.retrieve_doc)
+        self.popup = PopUpProgressBar()
 
-    def open_about(self) -> None:
+    @staticmethod
+    def open_about() -> None:
         dlg = AboutDialog()
         dlg.exec_()
 
-    def open_help(self) -> None:
+    @staticmethod
+    def open_help() -> None:
         dlg = HelpDialog()
         dlg.exec_()
 
-    def open_create(self) -> None:
+    @staticmethod
+    def open_create() -> None:
         dlg = CreateDialog()
         dlg.exec_()
 
-    def open_update(self) -> None:
+    @staticmethod
+    def open_update() -> None:
         dlg = UpdateDialog()
         dlg.exec_()
 
@@ -227,15 +324,61 @@ class Ui_main_window(object):
 
     def on_change(self):
         if self.rad_all.isChecked():
-            self.cmb_elements.setEnabled(True)
+            self.check_elem.setEnabled(True)
         elif self.rad_dims.isChecked():
-            self.cmb_elements.setEnabled(True)
+            self.check_elem.setEnabled(True)
         else:
-            self.cmb_elements.setEnabled(False)
+            self.check_elem.setEnabled(False)
 
-    def retranslateUi(self, main_window):
+    def retrieve_doc(self) -> None:
+        _method = {}
+        try:
+            if self.cmb_config.currentText() == '':
+                raise ValueError("No Configuration Selected")
+            section = get_config(self.cmb_config.currentText())
+            if self.le_user.text() == '':
+                raise ValueError("No Username Provided")
+            _output_dir = self.le_directory.text()
+            if _output_dir == '':
+                raise ValueError("No directory specified")
+            _user = self.le_user.text()
+            _password = self.le_password.text()
+            section['user'] = _user
+            section['password'] = _password
+            section['session_context'] = APP_NAME
+            if not self.rad_all.isChecked() and not self.rad_dims.isChecked() and self.rad_cubes.isChecked() \
+                    and self.rad_procs.isChecked() and not self.rad_security.isChecked():
+                raise ValueError("No Options Selected")
+            if self.rad_all.isChecked():
+                _method['retrieve'] = 'all'
+                if self.check_elem.isChecked():
+                    _method['elements'] = True
+                else:
+                    _method['elements'] = False
+            elif self.rad_dims.isChecked():
+                _method['retrieve'] = 'dimensions'
+                if self.check_elem.isChecked():
+                    _method['elements'] = True
+                else:
+                    _method['elements'] = False
+            elif self.rad_cubes.isChecked():
+                _method['retrieve'] = 'cubes'
+            elif self.rad_procs.isChecked():
+                _method['retrieve'] = 'processes'
+            elif self.rad_security.isChecked():
+                _method['retrieve'] = 'security'
+            get_docs(server=str(self.cmb_config.currentText()), instance=section, output_dir=_output_dir, **_method)
+            self.popup.start_progress()
+        except ValueError as e:
+            self.statusbar.showMessage(str(e))
+        except TM1pyNotAdminException:
+            self.statusbar.showMessage("User must be admin in PA")
+        except TM1pyException as t:
+            self.statusbar.showMessage(str(t))
+
+    def retranslate_ui(self, mainwindow):
         _translate = QtCore.QCoreApplication.translate
-        main_window.setWindowTitle(_translate("main_window", "ACG Model Documenter"))
+        mainwindow.setWindowTitle(_translate("main_window", "ACG Model Documentor"))
         self.groupBox.setTitle(_translate("main_window", "Configuration"))
         self.label.setText(_translate("main_window", "Choose Configuration"))
         self.label_2.setText(_translate("main_window", "Username"))
@@ -259,9 +402,10 @@ class Ui_main_window(object):
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     main_window = QtWidgets.QMainWindow()
-    ui = Ui_main_window()
-    ui.setupUi(main_window)
+    ui = UiMainWindow()
+    ui.setup_ui(main_window)
     main_window.show()
     sys.exit(app.exec_())

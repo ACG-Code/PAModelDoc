@@ -7,20 +7,30 @@ from base_settings import APP_NAME, APP_VERSION
 var = resources_rc
 
 
-class Ui_help_window(object):
+class UiHelpWindow(object):
     """
     Setup and display Help...Instructions screen
     """
-    def setupUi(self, help_window):
-        help_window.setObjectName("help_window")
-        help_window.resize(768, 549)
+
+    def __init__(self):
+        self.le_instructions = None
+        self.verticalLayout_2 = None
+        self.verticalLayoutWidget_2 = None
+        self.le_appname = None
+        self.verticalLayout = None
+        self.verticalLayoutWidget = None
+        self.label_2 = None
+
+    def setup_ui(self, helpwindow):
+        helpwindow.setObjectName("help_window")
+        helpwindow.resize(768, 549)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/ACG.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         help_window.setWindowIcon(icon)
-        self.label_2 = QtWidgets.QLabel(help_window)
+        self.label_2 = QtWidgets.QLabel(helpwindow)
         self.label_2.setGeometry(QtCore.QRect(10, 10, 101, 71))
         self.label_2.setObjectName("label_2")
-        self.verticalLayoutWidget = QtWidgets.QWidget(help_window)
+        self.verticalLayoutWidget = QtWidgets.QWidget(helpwindow)
         self.verticalLayoutWidget.setGeometry(QtCore.QRect(110, 20, 641, 80))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
@@ -41,11 +51,11 @@ class Ui_help_window(object):
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.le_instructions = QtWidgets.QLabel(self.verticalLayoutWidget_2)
-        self.le_instructions.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.le_instructions.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
         self.le_instructions.setObjectName("le_instructions")
         self.verticalLayout_2.addWidget(self.le_instructions)
 
-        self.retranslateUi(help_window)
+        self.retranslate_ui(help_window)
         QtCore.QMetaObject.connectSlotsByName(help_window)
         self.le_appname.setText(f"{APP_NAME}\nVersion: {APP_VERSION}\n© 2023 Application Consulting Group")
         instructions = """
@@ -74,19 +84,23 @@ class Ui_help_window(object):
         """
         self.le_instructions.setText(instructions)
 
-    def retranslateUi(self, help_window):
+    def retranslate_ui(self, helpwindow):
         _translate = QtCore.QCoreApplication.translate
-        help_window.setWindowTitle(_translate("help_window", "ACG Model Cleanup - Instructions"))
-        self.label_2.setText(_translate("help_window", "<html><head/><body><p><img src=\"C:/Users/charvey/PycharmProjects/ACGModelClean/acg_logo.jpg\"/></p></body></html>"))
+        helpwindow.setWindowTitle(_translate("help_window", "ACG Model Documentor - Instructions"))
+        self.label_2.setText(_translate("help_window",
+                                        "<html><head/><body><p><img "
+                                        "src=\"C:/Users/charvey/PycharmProjects/ACG-ModelDoc/PAModelDoc/acg_logo.jpg\"/></p"
+                                        "></body></html>"))
         self.le_appname.setText(_translate("help_window", "TextLabel"))
         self.le_instructions.setText(_translate("help_window", "TextLabel"))
 
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     help_window = QtWidgets.QDialog()
-    ui = Ui_help_window()
-    ui.setupUi(help_window)
+    ui = UiHelpWindow()
+    ui.setup_ui(help_window)
     help_window.show()
     sys.exit(app.exec_())

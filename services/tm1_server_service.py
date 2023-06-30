@@ -1,8 +1,9 @@
+import os
+from datetime import datetime
+from typing import List
+
 import pandas as pd
 from TM1py import TM1Service
-from datetime import datetime
-import os
-from typing import List
 
 PA_VERSIONS = {
     '11.8.00000.33': ['11.8.00000.33', '2.0.9.1', '2020.05'],
@@ -19,8 +20,9 @@ PA_VERSIONS = {
     '11.8.01200.7': ['11.8.01200.7', '2.0.9.13', '2022.04'],
     '11.8.01300.1': ['11.8.01300.1', '2.0.9.14', '2022.05'],
     '11.8.01700.1': ['11.8.01700.1', '2.0.9.15', '2022.10'],
-    '11.8.01900.10': ['11.8.01900.10', '2.0.9.16', '2023.02']
-    }
+    '11.8.01900.10': ['11.8.01900.10', '2.0.9.16', '2023.02'],
+    '11.8.02000.7': ['11.8.02000.7', '2.0.9.17', '2023.05']
+}
 
 
 class ServerService:
@@ -78,7 +80,8 @@ class ServerService:
 
         with self.conn as tm1:
             servername = tm1.server.get_server_name()
-            self.log_lines.append(f"'{servername}' Server Information as of {datetime.now().strftime('%d-%b-%Y %H:%M:%S')}\n")
+            self.log_lines.append(
+                f"'{servername}' Server Information as of {datetime.now().strftime('%d-%b-%Y %H:%M:%S')}\n")
             version = tm1.server.get_product_version()
             try:
                 self.log_lines.append(f"PA Version Information: {PA_VERSIONS[version]}")

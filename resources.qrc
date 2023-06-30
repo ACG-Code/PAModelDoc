@@ -1,6 +1,6 @@
 <RCC>
-  <qresource prefix="/">
-    <file>ACG.ico</file>
-    <file>acg_logo.jpg</file>
-  </qresource>
+    <qresource prefix="/">
+        <file>ACG.ico</file>
+        <file>acg_logo.jpg</file>
+    </qresource>
 </RCC>

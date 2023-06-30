@@ -1,8 +1,9 @@
 from configparser import ConfigParser
 from getpass import getpass
-from base_settings import application_path
 
+from base_settings import application_path
 from utilities import PySecrets, DB
+
 APP_CONTEXT = 'PAModelDoc'
 
 
