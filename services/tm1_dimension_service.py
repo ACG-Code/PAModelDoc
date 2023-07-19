@@ -103,10 +103,10 @@ class DimensionService:
         subset_list = []
         tm1 = TM1Service(**self.instance)
         for dimension in tm1.dimensions.get_all_names():
-            try:
-                public_subsets = tm1.dimensions.subsets.get_all_names(dimension_name=dimension,
-                                                                      hierarchy_name=dimension,
-                                                                      private=False)
+            if not dimension.startswith('}'):
+                public_subsets = tm1.subsets.get_all_names(dimension_name=dimension,
+                                                           hierarchy_name=dimension,
+                                                           private=False)
                 for subset in public_subsets:
                     sub = tm1.subsets.get(dimension_name=dimension,
                                           hierarchy_name=dimension,
@@ -117,26 +117,19 @@ class DimensionService:
                                                                hierarchy_name=dimension,
                                                                subset_name=subset,
                                                                private=False)
-                        subset_list.append([dimension, sub.name, sub.expression, len(_count)])
+                        subset_list.append([dimension, sub.name, 'MDX' if sub.expression else 'Static',
+                                            len(_count)])
                     else:
-                        subset_list.append([dimension, sub.name, sub.expression])
-                if subset_list:
-                    subset_df = pd.DataFrame(subset_list)
-                    if self.elements:
-                        subset_df.columns = ['Dimension', 'Subset', 'Static_MDX', 'Number of Elements']
-                    else:
-                        subset_df.columns = ['Dimension', 'Subset', 'Static_MDX']
-                    subset_df['Static_MDX'].replace(to_replace=[None], value='Static', inplace=True)
-                    subset_df.loc[subset_df.Static_MDX != 'Static', 'Static_MDX'] = 'MDX'
-                    return subset_df
-                else:
-                    return None
-            except TM1pyException as e:
-                if "Could not execute" in e.message:
-                    continue
-                else:
-                    print(e)
-                return None
+                        subset_list.append([dimension, sub.name, 'MDX' if sub.expression else 'Static'])
+        if subset_list:
+            subset_df = pd.DataFrame(subset_list)
+            if self.elements:
+                subset_df.columns = ['Dimension', 'Subset', 'Type', 'Number of Elements']
+            else:
+                subset_df.columns = ['Dimension', 'Subset', 'Type']
+            return subset_df
+        else:
+            return None
 
     def get_dimension_unused(self) -> pd.DataFrame or None:
         """

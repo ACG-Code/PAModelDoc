@@ -185,7 +185,7 @@ class UiCreateWindow(object):
             if _cloud:
                 _config = {
                     'cloud': True,
-                    'base_url': _base_url
+                    'address': _base_url
                 }
             else:
                 _config = {

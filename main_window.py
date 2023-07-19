@@ -1,11 +1,12 @@
+import sys
+import time
+
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QMessageBox, QProgressBar, QVBoxLayout, QWidget
 from PyQt5.QtCore import QThread, pyqtSignal, QObject, pyqtSlot
+from PyQt5.QtWidgets import QMessageBox, QProgressBar, QVBoxLayout, QWidget
 from TM1py.Exceptions import TM1pyNotAdminException, TM1pyException
 
 import resources_rc
-import os
-import time
 from about_window import UiAboutWindow
 from base_settings import APP_NAME
 from create_window import UiCreateWindow
@@ -124,6 +125,7 @@ class UiMainWindow(object):
         self.check_elem = None
         self.completed = None
         self.popup = None
+        self.progress_bar = QProgressBar()
 
     def setup_ui(self, mainwindow):
         mainwindow.setObjectName("main_window")
@@ -296,7 +298,8 @@ class UiMainWindow(object):
         self.rad_procs.clicked.connect(self.on_change)
         self.rad_security.clicked.connect(self.on_change)
         self.btn_execute.clicked.connect(self.retrieve_doc)
-        self.popup = PopUpProgressBar()
+        self.statusbar.addPermanentWidget(self.progress_bar)
+        self.progress_bar.hide()
 
     @staticmethod
     def open_about() -> None:
@@ -367,8 +370,16 @@ class UiMainWindow(object):
                 _method['retrieve'] = 'processes'
             elif self.rad_security.isChecked():
                 _method['retrieve'] = 'security'
+            # self.statusbar.showMessage("Working...")
+            # QtWidgets.QApplication.processEvents()
             get_docs(server=str(self.cmb_config.currentText()), instance=section, output_dir=_output_dir, **_method)
-            self.popup.start_progress()
+            # self.get_info(server=str(self.cmb_config.currentText()), instance=section, output=_output_dir, method=_method)
+            msg = QMessageBox()
+            msg.setWindowTitle("Success")
+            msg.setIcon(QMessageBox.Information)
+            msg.setText("Retrieval Complete")
+            msg.exec_()
+            self.statusbar.showMessage("Ready")
         except ValueError as e:
             self.statusbar.showMessage(str(e))
         except TM1pyNotAdminException:
@@ -378,7 +389,7 @@ class UiMainWindow(object):
 
     def retranslate_ui(self, mainwindow):
         _translate = QtCore.QCoreApplication.translate
-        mainwindow.setWindowTitle(_translate("main_window", "ACG Model Documentor"))
+        mainwindow.setWindowTitle(_translate("main_window", "ACG Model Documenter"))
         self.groupBox.setTitle(_translate("main_window", "Configuration"))
         self.label.setText(_translate("main_window", "Choose Configuration"))
         self.label_2.setText(_translate("main_window", "Username"))
@@ -401,8 +412,6 @@ class UiMainWindow(object):
 
 
 if __name__ == "__main__":
-    import sys
-
     app = QtWidgets.QApplication(sys.argv)
     main_window = QtWidgets.QMainWindow()
     ui = UiMainWindow()
