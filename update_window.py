@@ -255,7 +255,7 @@ class UiUpdateWindow(object):
 
     def retranslate_ui(self, updatewindow):
         _translate = QtCore.QCoreApplication.translate
-        updatewindow.setWindowTitle(_translate("update_window", "ACG Model Documentor - Update Configuration"))
+        updatewindow.setWindowTitle(_translate("update_window", "ACG Model Documenter - Update Configuration"))
         self.label.setText(_translate("update_window", "Choose Existing Configuration"))
         self.label_7.setText(_translate("update_window", "CAM Namespace ID"))
         self.label_6.setText(_translate("update_window", "Use SSL"))

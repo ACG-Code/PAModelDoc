@@ -42,46 +42,6 @@ class UpdateDialog(QtWidgets.QDialog, UiUpdateWindow):
         self.setup_ui(self)
 
 
-class Worker(QObject):
-    finished = pyqtSignal()
-    intReady = pyqtSignal(int)
-
-    @pyqtSlot()
-    def proc_counter(self):  # A slot takes no params
-        for i in range(1, 100):
-            time.sleep(0.1)
-            self.intReady.emit(i)
-
-        self.finished.emit()
-
-
-class PopUpProgressBar(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.pbar = QProgressBar()
-        self.pbar.setGeometry(30, 40, 500, 75)
-        self.layout = QVBoxLayout(self)
-        self.layout.addWidget(self.pbar)
-        self.setLayout(self.layout)
-        self.setGeometry(300, 300, 550, 100)
-        self.setWindowTitle('Retrieving Information')
-
-        self.obj = Worker()
-        self.thread = QThread()
-        self.obj.intReady.connect(self.on_count_changed)
-        self.obj.moveToThread(self.thread)
-        self.obj.finished.connect(self.thread.quit)
-        self.obj.finished.connect(self.hide)
-        self.thread.started.connect(self.obj.proc_counter)
-
-    def start_progress(self):
-        self.show()
-        self.thread.start()
-
-    def on_count_changed(self, value):
-        self.pbar.setValue(value)
-
-
 class UiMainWindow(object):
     def __init__(self):
         self.actionAbout = None
@@ -370,10 +330,11 @@ class UiMainWindow(object):
                 _method['retrieve'] = 'processes'
             elif self.rad_security.isChecked():
                 _method['retrieve'] = 'security'
-            # self.statusbar.showMessage("Working...")
-            # QtWidgets.QApplication.processEvents()
+            self.statusbar.showMessage("Retrieving Information - Please wait...")
+            QtWidgets.QApplication.processEvents()
+            QtWidgets.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
             get_docs(server=str(self.cmb_config.currentText()), instance=section, output_dir=_output_dir, **_method)
-            # self.get_info(server=str(self.cmb_config.currentText()), instance=section, output=_output_dir, method=_method)
+            QtWidgets.QApplication.restoreOverrideCursor()
             msg = QMessageBox()
             msg.setWindowTitle("Success")
             msg.setIcon(QMessageBox.Information)

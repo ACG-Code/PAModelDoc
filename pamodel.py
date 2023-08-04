@@ -1,6 +1,10 @@
 import os
 import pandas as pd
-
+from PyQt5.QtWidgets import QWidget, QProgressBar,  QApplication
+from PyQt5.QtCore import QTimer
+from PyQt5.QtGui import QIcon, QPixmap
+import sys
+import time
 from services import TM1DocService
 from utilities import Format
 
@@ -14,6 +18,8 @@ def get_docs(server: str, instance: dict, output_dir: str, **kwargs):
     if method == 'cubes':
         formt = Format()
         cube_df, view_df, stats_df = doc.cubes.get_all_cube_info()
+        pb.pbar.setValue(100)
+        QApplication.processEvents()
         file = os.path.join(output_dir, server + '_Cubes.xlsx')
         with pd.ExcelWriter(file, engine='xlsxwriter') as writer:
             if cube_df is not None:

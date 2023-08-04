@@ -243,7 +243,7 @@ class UiCreateWindow(object):
 
     def retranslate_ui(self, createwindow):
         _translate = QtCore.QCoreApplication.translate
-        createwindow.setWindowTitle(_translate("create_window", "ACG Model Documentor - Create Configuration"))
+        createwindow.setWindowTitle(_translate("create_window", "ACG Model Documenter - Create Configuration"))
         self.label.setText(_translate("create_window", "IBM Cloud"))
         self.label_2.setText(_translate("create_window", "Address"))
         self.label_3.setText(_translate("create_window", "HTTP Port Number"))

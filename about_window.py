@@ -73,7 +73,7 @@ class UiAboutWindow(object):
 
     def retranslate_ui(self, aboutwindow):
         _translate = QtCore.QCoreApplication.translate
-        aboutwindow.setWindowTitle(_translate("about_window", "ACG Model Documentor - About"))
+        aboutwindow.setWindowTitle(_translate("about_window", "ACG Model Documenter - About"))
         self.label.setText(
             _translate("about_window", "<html><head/><body><p><img src=\"C:/Users/charvey/PycharmProjects/ACG"
                                        "-ModelDoc/PAModelDoc/acg_logo.jpg\"/></p></body></html>"))

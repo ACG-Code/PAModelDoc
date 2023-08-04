@@ -26,7 +26,7 @@ class UiHelpWindow(object):
         helpwindow.resize(768, 549)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/ACG.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        help_window.setWindowIcon(icon)
+        helpwindow.setWindowIcon(icon)
         self.label_2 = QtWidgets.QLabel(helpwindow)
         self.label_2.setGeometry(QtCore.QRect(10, 10, 101, 71))
         self.label_2.setObjectName("label_2")
@@ -44,7 +44,7 @@ class UiHelpWindow(object):
         self.le_appname.setFont(font)
         self.le_appname.setObjectName("le_appname")
         self.verticalLayout.addWidget(self.le_appname)
-        self.verticalLayoutWidget_2 = QtWidgets.QWidget(help_window)
+        self.verticalLayoutWidget_2 = QtWidgets.QWidget(helpwindow)
         self.verticalLayoutWidget_2.setGeometry(QtCore.QRect(10, 110, 741, 421))
         self.verticalLayoutWidget_2.setObjectName("verticalLayoutWidget_2")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.verticalLayoutWidget_2)
@@ -55,38 +55,72 @@ class UiHelpWindow(object):
         self.le_instructions.setObjectName("le_instructions")
         self.verticalLayout_2.addWidget(self.le_instructions)
 
-        self.retranslate_ui(help_window)
-        QtCore.QMetaObject.connectSlotsByName(help_window)
+        self.retranslate_ui(helpwindow)
+        QtCore.QMetaObject.connectSlotsByName(helpwindow)
         self.le_appname.setText(f"{APP_NAME}\nVersion: {APP_VERSION}\n© 2023 Application Consulting Group")
         instructions = """
-        <b>Options for CSV File:</b>
+        <b>Configurations</b>
         <p style="margin-left: 25px;">
-        -c:&lt;cube_name&gt;<br>
-        -d:&lt;dimension_name&gt;<br>
-        -v:&lt;cube_name&amp;view_name&gt;<br>
-        -s:&lt;dimension_name&amp;public_subset_name&gt;<br>
-        -p:&lt;process_name&gt;<br>
-        </p>
-        <p>&nbsp;</p>
-        Order is important, cubes must be deleted before any dimensions used by the cube.  The "&lt; &gt;" signs 
-        indicate proper names for items in the model, <br>and should not be included in the CSV file
-        <p>&nbsp;</p><br>
-        <b>Example:</b>
+        A configuration must be created before retrieving instance information<br>
+        Use existing configurations to retrieve information from known sources<br>
+        <b>Non-Interactive user information should be used for all IBM Cloud connections</b><br> 
+        </p><p>&nbsp;</p>
+        
+        <b>Options for retrieval:</b>
         <p style="margin-left: 25px;">
-        -c:cube1<br>
-        -c:cube2<br>
-        -d:dimension1<br>
-        -d:dimension2<br>
-        -v:cube3&amp;View1<br>
-        -s:dimension3&amp;subset1<br>
-        -p:process1<br>
+        <table style="width:100%">
+        <tr>
+        <td style="width:33%">
+        <b>All:</b><br>
+        Server Information<br>
+        Cube Information<br>
+        Dimension Information<br>
+        Process Information<br>
+        Security Information<br>
+        </ul>
+       </td>
+       <td style="width:33%">&nbsp;&nbsp;</td>
+       <td style="width:33%">
+        <b>Cubes:</b><br>
+        Cubes and associated dimensions<br>
+        Public Cube Views<br>
+        Cube Statistics<br>
+        </td>
+        <td style="width:33%">&nbsp;&nbsp;</td>
+        <td>
+        <b>Dimensions:</b><br>
+        Dimension List<br>
+        Dimension Virtual Hierarchies<br>
+        Dimension Attributes<br>
+        Dimension Public Subsets<br>
+        Stand-alone dimensions
+        </td>
+        <td style="width:33%">&nbsp;&nbsp;</td>
+        <td>
+        <b>Processes:</b><br>
+        TI Processes<br>
+        Chores<br>
+        </td>
+        <td style="width:33%">&nbsp;&nbsp;</td>
+        <td>
+        <b>Security:</b><br>
+        Client Group Associations<br>
+        Cube Security<br>
+        Dimension Security<br>
+        Process Security<br>
+        Chore Security<br>
+        Unused Groups<br>
+        </td>
+        </tr>
+        </table>
         </p>
+        
         """
         self.le_instructions.setText(instructions)
 
     def retranslate_ui(self, helpwindow):
         _translate = QtCore.QCoreApplication.translate
-        helpwindow.setWindowTitle(_translate("help_window", "ACG Model Documentor - Instructions"))
+        helpwindow.setWindowTitle(_translate("help_window", "ACG Model Documenter - Instructions"))
         self.label_2.setText(_translate("help_window",
                                         "<html><head/><body><p><img "
                                         "src=\"C:/Users/charvey/PycharmProjects/ACG-ModelDoc/PAModelDoc/acg_logo.jpg\"/></p"
