@@ -271,15 +271,18 @@ class UiMainWindow(object):
         dlg = HelpDialog()
         dlg.exec_()
 
-    @staticmethod
-    def open_create() -> None:
+    def open_create(self) -> None:
         dlg = CreateDialog()
         dlg.exec_()
+        self.cmb_config.clear()
+        sections = retrieve_sections()
+        self.cmb_config.addItems(sections)
 
-    @staticmethod
-    def open_update() -> None:
+    def open_update(self) -> None:
         dlg = UpdateDialog()
         dlg.exec_()
+        self.cmb_config.clear()
+        self.cmb_config.addItems(retrieve_sections())
 
     def browse_dirs(self) -> None:
         _path = QtWidgets.QFileDialog.getExistingDirectory(None, "Choose Output Directory")
