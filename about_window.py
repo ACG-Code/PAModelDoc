@@ -75,8 +75,7 @@ class UiAboutWindow(object):
         _translate = QtCore.QCoreApplication.translate
         aboutwindow.setWindowTitle(_translate("about_window", "ACG Model Documenter - About"))
         self.label.setText(
-            _translate("about_window", "<html><head/><body><p><img src=\"C:/Users/charvey/PycharmProjects/ACG"
-                                       "-ModelDoc/PAModelDoc/acg_logo.jpg\"/></p></body></html>"))
+            _translate("about_window", "<html><head/><body><p><img src=\"C:/Users/charvey/PycharmProjects/ACG-ModelDoc/PAModelDoc/acg_logo.jpg\"/></p></body></html>"))
         self.le_about.setText(_translate("about_window", "TextLabel"))
         self.lbl_license.setText(_translate("about_window", "TextLabel"))
 

@@ -111,7 +111,7 @@ class UiMainWindow(object):
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.label = QtWidgets.QLabel(self.verticalLayoutWidget_2)
         font = QtGui.QFont()
-        font.setPointSize(12)
+        font.setPointSize(11)
         font.setBold(True)
         font.setWeight(75)
         self.label.setFont(font)

@@ -113,12 +113,15 @@ class DimensionService:
                                           subset_name=subset,
                                           private=False)
                     if self.elements:
-                        _count = tm1.subsets.get_element_names(dimension_name=dimension,
-                                                               hierarchy_name=dimension,
-                                                               subset_name=subset,
-                                                               private=False)
-                        subset_list.append([dimension, sub.name, 'MDX' if sub.expression else 'Static',
-                                            len(_count)])
+                        try:
+                            _count = tm1.subsets.get_element_names(dimension_name=dimension,
+                                                                   hierarchy_name=dimension,
+                                                                   subset_name=subset,
+                                                                   private=False)
+                            subset_list.append([dimension, sub.name, 'MDX' if sub.expression else 'Static',
+                                                len(_count)])
+                        except TM1pyException:
+                            continue
                     else:
                         subset_list.append([dimension, sub.name, 'MDX' if sub.expression else 'Static'])
         if subset_list:
