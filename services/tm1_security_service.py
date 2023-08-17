@@ -1,9 +1,10 @@
+from concurrent.futures import ThreadPoolExecutor
+
+import numpy as np
 import pandas as pd
 from TM1py.Exceptions import TM1pyException
-from TM1py.Utils import build_pandas_dataframe_from_cellset
 from TM1py.Services import TM1Service
-import numpy as np
-from concurrent.futures import ThreadPoolExecutor
+from TM1py.Utils import build_pandas_dataframe_from_cellset
 
 
 class SecurityService:

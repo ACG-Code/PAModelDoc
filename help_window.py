@@ -1,0 +1,140 @@
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+import resources_rc
+from base_settings import APP_NAME, APP_VERSION
+
+# Next line to prevent removal of resources_rc during optimization
+var = resources_rc
+
+
+class UiHelpWindow(object):
+    """
+    Setup and display Help...Instructions screen
+    """
+
+    def __init__(self):
+        self.le_instructions = None
+        self.verticalLayout_2 = None
+        self.verticalLayoutWidget_2 = None
+        self.le_appname = None
+        self.verticalLayout = None
+        self.verticalLayoutWidget = None
+        self.label_2 = None
+
+    def setup_ui(self, helpwindow):
+        helpwindow.setObjectName("help_window")
+        helpwindow.resize(768, 549)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/ACG.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        helpwindow.setWindowIcon(icon)
+        self.label_2 = QtWidgets.QLabel(helpwindow)
+        self.label_2.setGeometry(QtCore.QRect(10, 10, 101, 71))
+        self.label_2.setObjectName("label_2")
+        self.verticalLayoutWidget = QtWidgets.QWidget(helpwindow)
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(110, 20, 641, 80))
+        self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.le_appname = QtWidgets.QLabel(self.verticalLayoutWidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.le_appname.setFont(font)
+        self.le_appname.setObjectName("le_appname")
+        self.verticalLayout.addWidget(self.le_appname)
+        self.verticalLayoutWidget_2 = QtWidgets.QWidget(helpwindow)
+        self.verticalLayoutWidget_2.setGeometry(QtCore.QRect(10, 110, 741, 421))
+        self.verticalLayoutWidget_2.setObjectName("verticalLayoutWidget_2")
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.verticalLayoutWidget_2)
+        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.le_instructions = QtWidgets.QLabel(self.verticalLayoutWidget_2)
+        self.le_instructions.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
+        self.le_instructions.setObjectName("le_instructions")
+        self.verticalLayout_2.addWidget(self.le_instructions)
+
+        self.retranslate_ui(helpwindow)
+        QtCore.QMetaObject.connectSlotsByName(helpwindow)
+        self.le_appname.setText(f"{APP_NAME}\nVersion: {APP_VERSION}\n© 2023 Application Consulting Group")
+        instructions = """
+        <b>Configurations</b>
+        <p style="margin-left: 25px;">
+        A configuration must be created before retrieving instance information<br>
+        Use existing configurations to retrieve information from known sources<br>
+        <b>Non-Interactive user information should be used for all IBM Cloud connections</b><br> 
+        </p><p>&nbsp;</p>
+        
+        <b>Options for retrieval:</b>
+        <p style="margin-left: 25px;">
+        <table style="width:100%">
+        <tr>
+        <td style="width:33%">
+        <b>All:</b><br>
+        Server Information<br>
+        Cube Information<br>
+        Dimension Information<br>
+        Process Information<br>
+        Security Information<br>
+        </ul>
+       </td>
+       <td style="width:33%">&nbsp;&nbsp;</td>
+       <td style="width:33%">
+        <b>Cubes:</b><br>
+        Cubes and associated dimensions<br>
+        Public Cube Views<br>
+        Cube Statistics<br>
+        </td>
+        <td style="width:33%">&nbsp;&nbsp;</td>
+        <td>
+        <b>Dimensions:</b><br>
+        Dimension List<br>
+        Dimension Virtual Hierarchies<br>
+        Dimension Attributes<br>
+        Dimension Public Subsets<br>
+        Stand-alone dimensions
+        </td>
+        <td style="width:33%">&nbsp;&nbsp;</td>
+        <td>
+        <b>Processes:</b><br>
+        TI Processes<br>
+        Chores<br>
+        </td>
+        <td style="width:33%">&nbsp;&nbsp;</td>
+        <td>
+        <b>Security:</b><br>
+        Client Group Associations<br>
+        Cube Security<br>
+        Dimension Security<br>
+        Process Security<br>
+        Chore Security<br>
+        Unused Groups<br>
+        </td>
+        </tr>
+        </table>
+        </p>
+        
+        """
+        self.le_instructions.setText(instructions)
+
+    def retranslate_ui(self, helpwindow):
+        _translate = QtCore.QCoreApplication.translate
+        helpwindow.setWindowTitle(_translate("help_window", "ACG Model Documenter - Instructions"))
+        self.label_2.setText(_translate("help_window",
+                                        "<html><head/><body><p><img "
+                                        "src=\"C:/Users/charvey/PycharmProjects/ACG-ModelDoc/PAModelDoc/acg_logo.jpg\"/></p"
+                                        "></body></html>"))
+        self.le_appname.setText(_translate("help_window", "TextLabel"))
+        self.le_instructions.setText(_translate("help_window", "TextLabel"))
+
+
+if __name__ == "__main__":
+    import sys
+
+    app = QtWidgets.QApplication(sys.argv)
+    help_window = QtWidgets.QDialog()
+    ui = UiHelpWindow()
+    ui.setup_ui(help_window)
+    help_window.show()
+    sys.exit(app.exec_())

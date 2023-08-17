@@ -1,5 +1,8 @@
-from services import CubeService, DimensionService, ProcessService, SecurityService, ServerService
+import os
+
 import pandas as pd
+
+from services import CubeService, DimensionService, ProcessService, SecurityService, ServerService
 from utilities import Format
 
 
@@ -8,10 +11,11 @@ class TM1DocService:
     Controlling class for TM1 Documentation class
     """
 
-    def __init__(self, server: str, instance: dict, elements: bool):
+    def __init__(self, server: str, instance: dict, output: str, elements: bool):
         self.server = server
         self.instance = instance
         self.elements = elements
+        self.output = output
         self.cubes = CubeService(instance=self.instance)
         self.dimensions = DimensionService(instance=self.instance, elements=self.elements)
         self.processes = ProcessService(instance=self.instance)
@@ -29,7 +33,8 @@ class TM1DocService:
         dimensions, hierarchies, attributes, subsets, unused_dim = self.dimensions.get_all_dimension_info()
         processes, chores = self.processes.get_all_process_information()
         assigned, dimension, cube, application, process, chore, unused = self.security.get_all_security_information()
-        with pd.ExcelWriter(self.server + "_ModelDocumentation.xlsx", engine="xlsxwriter") as writer:
+        file = os.path.join(self.output, self.server + '_ModelDocumentation.xlsx')
+        with pd.ExcelWriter(file, engine="xlsxwriter") as writer:
             if len(server_info.values) > 0:
                 server_info.to_excel(writer, sheet_name="Server Information", engine='xlsxwriter', index=False,
                                      startrow=1, startcol=1, freeze_panes=(2, 0))

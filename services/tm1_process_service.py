@@ -1,7 +1,8 @@
-from TM1py.Exceptions import TM1pyException
-import pandas as pd
-from TM1py.Services import TM1Service
 from concurrent.futures import ThreadPoolExecutor
+
+import pandas as pd
+from TM1py.Exceptions import TM1pyException
+from TM1py.Services import TM1Service
 
 
 class ProcessService:
@@ -35,7 +36,7 @@ class ProcessService:
             if process_list:
                 process_df = pd.DataFrame(process_list)
                 process_df.columns = ['Process Name', 'Parameters', 'Datasource Type', 'Datasource Name for Client',
-                                      'DatasourceName for Server']
+                                      'Datasource Name for Server']
                 return process_df
             else:
                 return None

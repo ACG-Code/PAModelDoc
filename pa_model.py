@@ -23,20 +23,22 @@ Options:
     --processes     Get TI Process/Chore Information
     --security      Get Security Information
 
-© Copyright 2021 Application Consulting Group
+© 2021 Application Consulting Group, Inc.
 """
 
-import pandas as pd
+from configparser import ConfigParser
+from getpass import getpass
 
-from utilities import TM1Config
+import pandas as pd
+from docopt import docopt
+
+from base_settings import application_path
 from services import TM1DocService
 from utilities import Format, DB, PySecrets
-from docopt import docopt
-from getpass import getpass
-from configparser import ConfigParser
-from base_settings import application_path
+from utilities import TM1Config
+
 APP_NAME = "PA Model Documentation Tool"
-APP_VERSION = '6.1.2'
+APP_VERSION = '6.1.3'
 
 
 def strtobool(value: str) -> bool:
@@ -76,7 +78,10 @@ def update_secret(secret: str):
                 else:
                     break
             password = sec.make_secret(secret=_pass)
+        if _update_user:
             db.update_secret(secret=secret, username=username, password=password)
+        else:
+            db.update_secret(secret=secret, username=None, password=password)
     except ValueError as e:
         print(e)
 
@@ -204,7 +209,7 @@ def main(instance: str, **kwargs):
 
 if __name__ == "__main__":
     cmd_args = docopt(__doc__, version=f"{APP_NAME}, Version {APP_VERSION}\n"
-                                       f"© Copyright 2021 Application Consulting Group")
+                                       f"© Copyright 2021 Application Consulting Group, Inc.")
     _instance = cmd_args.get('<INSTANCE>')
     # Secret Management
     if cmd_args['--update']:

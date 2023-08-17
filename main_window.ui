@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+    <class>main_window</class>
+    <widget class="QMainWindow" name="main_window">
+        <property name="geometry">
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>800</width>
+                <height>600</height>
+            </rect>
+        </property>
+        <property name="windowTitle">
+            <string>ACG Model Documenter</string>
+        </property>
+        <property name="windowIcon">
+            <iconset resource="resources.qrc">
+                <normaloff>:/ACG.ico</normaloff>:/ACG.ico
+            </iconset>
+        </property>
+        <widget class="QWidget" name="centralwidget">
+            <widget class="QWidget" name="verticalLayoutWidget">
+                <property name="geometry">
+                    <rect>
+                        <x>10</x>
+                        <y>10</y>
+                        <width>781</width>
+                        <height>541</height>
+                    </rect>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout">
+                    <item>
+                        <widget class="QGroupBox" name="groupBox">
+                            <property name="title">
+                                <string>Configuration</string>
+                            </property>
+                            <widget class="QWidget" name="verticalLayoutWidget_2">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>220</x>
+                                        <y>10</y>
+                                        <width>331</width>
+                                        <height>51</height>
+                                    </rect>
+                                </property>
+                                <layout class="QVBoxLayout" name="verticalLayout_2">
+                                    <item>
+                                        <widget class="QLabel" name="label">
+                                            <property name="font">
+                                                <font>
+                                                    <pointsize>12</pointsize>
+                                                    <weight>75</weight>
+                                                    <bold>true</bold>
+                                                </font>
+                                            </property>
+                                            <property name="text">
+                                                <string>Choose Configuration</string>
+                                            </property>
+                                            <property name="textFormat">
+                                                <enum>Qt::MarkdownText</enum>
+                                            </property>
+                                            <property name="alignment">
+                                                <set>Qt::AlignCenter</set>
+                                            </property>
+                                        </widget>
+                                    </item>
+                                    <item>
+                                        <widget class="QComboBox" name="cmb_config"/>
+                                    </item>
+                                </layout>
+                            </widget>
+                            <widget class="QWidget" name="gridLayoutWidget">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>80</y>
+                                        <width>761</width>
+                                        <height>80</height>
+                                    </rect>
+                                </property>
+                                <layout class="QGridLayout" name="gridLayout">
+                                    <item row="1" column="0">
+                                        <widget class="QLineEdit" name="le_user"/>
+                                    </item>
+                                    <item row="0" column="0">
+                                        <widget class="QLabel" name="label_2">
+                                            <property name="font">
+                                                <font>
+                                                    <weight>75</weight>
+                                                    <bold>true</bold>
+                                                </font>
+                                            </property>
+                                            <property name="text">
+                                                <string>Username</string>
+                                            </property>
+                                            <property name="alignment">
+                                                <set>Qt::AlignCenter</set>
+                                            </property>
+                                        </widget>
+                                    </item>
+                                    <item row="1" column="2">
+                                        <widget class="QLineEdit" name="le_password">
+                                            <property name="echoMode">
+                                                <enum>QLineEdit::PasswordEchoOnEdit</enum>
+                                            </property>
+                                        </widget>
+                                    </item>
+                                    <item row="0" column="2">
+                                        <widget class="QLabel" name="label_3">
+                                            <property name="font">
+                                                <font>
+                                                    <weight>75</weight>
+                                                    <bold>true</bold>
+                                                </font>
+                                            </property>
+                                            <property name="text">
+                                                <string>Password</string>
+                                            </property>
+                                            <property name="alignment">
+                                                <set>Qt::AlignCenter</set>
+                                            </property>
+                                        </widget>
+                                    </item>
+                                    <item row="0" column="1">
+                                        <spacer name="horizontalSpacer">
+                                            <property name="orientation">
+                                                <enum>Qt::Horizontal</enum>
+                                            </property>
+                                            <property name="sizeHint" stdset="0">
+                                                <size>
+                                                    <width>40</width>
+                                                    <height>20</height>
+                                                </size>
+                                            </property>
+                                        </spacer>
+                                    </item>
+                                </layout>
+                            </widget>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QGroupBox" name="groupBox_2">
+                            <property name="title">
+                                <string>Options</string>
+                            </property>
+                            <widget class="QWidget" name="gridLayoutWidget_2">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>20</y>
+                                        <width>761</width>
+                                        <height>51</height>
+                                    </rect>
+                                </property>
+                                <layout class="QGridLayout" name="gridLayout_2">
+                                    <item row="0" column="0">
+                                        <widget class="QLineEdit" name="le_directory"/>
+                                    </item>
+                                    <item row="0" column="1">
+                                        <widget class="QPushButton" name="btn_choose">
+                                            <property name="text">
+                                                <string>Choose Output Location</string>
+                                            </property>
+                                        </widget>
+                                    </item>
+                                </layout>
+                            </widget>
+                            <widget class="QWidget" name="gridLayoutWidget_3">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>80</y>
+                                        <width>761</width>
+                                        <height>80</height>
+                                    </rect>
+                                </property>
+                                <layout class="QGridLayout" name="gridLayout_3">
+                                    <item row="0" column="0">
+                                        <widget class="QRadioButton" name="rad_all">
+                                            <property name="text">
+                                                <string>All</string>
+                                            </property>
+                                        </widget>
+                                    </item>
+                                    <item row="0" column="2">
+                                        <widget class="QComboBox" name="cmb_elements"/>
+                                    </item>
+                                    <item row="0" column="1">
+                                        <widget class="QRadioButton" name="rad_cubes">
+                                            <property name="text">
+                                                <string>Cubes</string>
+                                            </property>
+                                        </widget>
+                                    </item>
+                                    <item row="1" column="0">
+                                        <widget class="QRadioButton" name="rad_dims">
+                                            <property name="text">
+                                                <string>Dimensions</string>
+                                            </property>
+                                        </widget>
+                                    </item>
+                                    <item row="1" column="1">
+                                        <widget class="QRadioButton" name="rad_procs">
+                                            <property name="text">
+                                                <string>Processes</string>
+                                            </property>
+                                        </widget>
+                                    </item>
+                                    <item row="1" column="2">
+                                        <widget class="QRadioButton" name="rad_security">
+                                            <property name="text">
+                                                <string>Security</string>
+                                            </property>
+                                        </widget>
+                                    </item>
+                                </layout>
+                            </widget>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QGroupBox" name="groupBox_3">
+                            <property name="title">
+                                <string>Execution</string>
+                            </property>
+                            <widget class="QWidget" name="gridLayoutWidget_4">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>50</y>
+                                        <width>761</width>
+                                        <height>80</height>
+                                    </rect>
+                                </property>
+                                <layout class="QGridLayout" name="gridLayout_4">
+                                    <item row="0" column="0">
+                                        <spacer name="horizontalSpacer_2">
+                                            <property name="orientation">
+                                                <enum>Qt::Horizontal</enum>
+                                            </property>
+                                            <property name="sizeHint" stdset="0">
+                                                <size>
+                                                    <width>40</width>
+                                                    <height>20</height>
+                                                </size>
+                                            </property>
+                                        </spacer>
+                                    </item>
+                                    <item row="0" column="1">
+                                        <widget class="QPushButton" name="btn_execute">
+                                            <property name="font">
+                                                <font>
+                                                    <weight>75</weight>
+                                                    <bold>true</bold>
+                                                </font>
+                                            </property>
+                                            <property name="text">
+                                                <string>Retrieve Documentation</string>
+                                            </property>
+                                        </widget>
+                                    </item>
+                                    <item row="0" column="2">
+                                        <spacer name="horizontalSpacer_3">
+                                            <property name="orientation">
+                                                <enum>Qt::Horizontal</enum>
+                                            </property>
+                                            <property name="sizeHint" stdset="0">
+                                                <size>
+                                                    <width>40</width>
+                                                    <height>20</height>
+                                                </size>
+                                            </property>
+                                        </spacer>
+                                    </item>
+                                </layout>
+                            </widget>
+                        </widget>
+                    </item>
+                </layout>
+            </widget>
+        </widget>
+        <widget class="QMenuBar" name="menubar">
+            <property name="geometry">
+                <rect>
+                    <x>0</x>
+                    <y>0</y>
+                    <width>800</width>
+                    <height>21</height>
+                </rect>
+            </property>
+            <widget class="QMenu" name="menuSetup">
+                <property name="title">
+                    <string>Setup</string>
+                </property>
+                <addaction name="actionCreate_Configuration"/>
+                <addaction name="actionUpdate_Configuration"/>
+            </widget>
+            <widget class="QMenu" name="menuHelp">
+                <property name="title">
+                    <string>Help</string>
+                </property>
+                <addaction name="actionInstructions"/>
+                <addaction name="actionAbout"/>
+            </widget>
+            <addaction name="menuSetup"/>
+            <addaction name="menuHelp"/>
+        </widget>
+        <widget class="QStatusBar" name="statusbar"/>
+        <action name="actionCreate_Configuration">
+            <property name="text">
+                <string>Create Configuration</string>
+            </property>
+        </action>
+        <action name="actionUpdate_Configuration">
+            <property name="text">
+                <string>Update Configuration</string>
+            </property>
+        </action>
+        <action name="actionInstructions">
+            <property name="text">
+                <string>Instructions</string>
+            </property>
+        </action>
+        <action name="actionAbout">
+            <property name="text">
+                <string>About</string>
+            </property>
+        </action>
+    </widget>
+    <resources>
+        <include location="resources.qrc"/>
+    </resources>
+    <connections/>
+</ui>
