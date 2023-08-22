@@ -144,7 +144,7 @@ class DimensionService:
             tm1 = TM1Service(**self.instance)
             all_dimensions = tm1.dimensions.get_all_names()
             used_dimensions = set()
-            for cube in tm1.cubes.get_all():
+            for cube in tm1.cubes.get_model_cubes():
                 used_dimensions.update(cube.dimensions)
             unused_dimensions = set(all_dimensions) - used_dimensions
             for dimension in unused_dimensions:
