@@ -1,8 +1,8 @@
 import os
 import sys
 
-APP_NAME = 'ACG Model Documenter'
-APP_VERSION = '7.0.4'
+APP_NAME = 'ACG Reveal'
+APP_VERSION = '8.0.0'
 
 if getattr(sys, 'frozen', False):
     APPLICATION_PATH = os.path.dirname(sys.executable)
