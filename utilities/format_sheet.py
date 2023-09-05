@@ -8,7 +8,8 @@ class Format:
     """
 
     @staticmethod
-    def format_sheet(df: pd.DataFrame, writer: pd.ExcelWriter, sheet_name: str, merge: bool, merge_object: str or None):
+    def format_sheet(df: pd.DataFrame, writer: pd.ExcelWriter, sheet_name: str, merge: bool, merge_object: str or None,
+                     filter: bool):
         workbook = writer.book
         worksheet = writer.sheets[sheet_name]
         worksheet.hide_gridlines(2)
@@ -46,3 +47,7 @@ class Format:
         for x in range(len(idx_max)):
             if x > 0:
                 worksheet.set_column(x, x, idx_max[x] * 1.25)
+
+        # Auto Filtering Logic
+        if filter:
+            worksheet.autofilter(1, 1, df.shape[0], df.shape[1])
