@@ -1,3 +1,4 @@
+import json
 from concurrent.futures import ThreadPoolExecutor
 
 import pandas as pd
@@ -20,23 +21,49 @@ class ProcessService:
         :return: Dataframe of retrieved information or None
         """
         process_list = []
+        tabs = ['PrologProcedure', 'MetadataProcedure', 'DataProcedure', 'EpilogProcedure']
+        proc_dict = {}
         try:
             for process in self.conn.processes.get_all_names():
+                line_count = 0
                 ti_process = self.conn.processes.get(name_process=process)
                 params = ti_process.parameters
+                proc_dict[process] = {}
+                for line in ti_process.body.splitlines():
+                    body = json.loads(line)
+                    for tab in tabs:
+                        text = body[tab].splitlines()
+                        tab_line = 0
+                        for statement in text:
+                            if statement not in ti_process.AUTO_GENERATED_STATEMENTS:
+                                line_count += 1
+                                tab_line += 1
+                        proc_dict[process][tab] = tab_line
+                    proc_dict[process]["TotalLineCount"] = line_count
                 if params:
                     for param in params:
                         process_list.append([ti_process.name, param, ti_process.datasource_type,
                                              ti_process.datasource_data_source_name_for_client,
-                                             ti_process.datasource_data_source_name_for_server])
+                                             ti_process.datasource_data_source_name_for_server,
+                                             proc_dict[process]["PrologProcedure"],
+                                             proc_dict[process]["MetadataProcedure"],
+                                             proc_dict[process]["DataProcedure"],
+                                             proc_dict[process]["EpilogProcedure"],
+                                             proc_dict[process]["TotalLineCount"]])
                 else:
                     process_list.append([ti_process.name, '', ti_process.datasource_type,
                                          ti_process.datasource_data_source_name_for_client,
-                                         ti_process.datasource_data_source_name_for_server])
+                                         ti_process.datasource_data_source_name_for_server,
+                                         proc_dict[process]["PrologProcedure"],
+                                         proc_dict[process]["MetadataProcedure"],
+                                         proc_dict[process]["DataProcedure"],
+                                         proc_dict[process]["EpilogProcedure"],
+                                         proc_dict[process]["TotalLineCount"]                                         ])
             if process_list:
                 process_df = pd.DataFrame(process_list)
                 process_df.columns = ['Process Name', 'Parameters', 'Datasource Type', 'Datasource Name for Client',
-                                      'Datasource Name for Server']
+                                      'Datasource Name for Server', "Prolog Line Count", "Metadata Line Count",
+                                      "Data Line Count", "Epilog Line Count", "Total Line Count"]
                 return process_df
             else:
                 return None
